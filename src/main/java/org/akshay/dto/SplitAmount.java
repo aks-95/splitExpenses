@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 public class SplitAmount {
     User user;
-    float amount;
+    double amount;
 }

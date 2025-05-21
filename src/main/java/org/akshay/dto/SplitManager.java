@@ -24,14 +24,26 @@ public class SplitManager {
         this.groups.add(group);
         return  group;
     }
-    private   Transaction addTransaction(int userId, int groupId, double amount,List<SplitAmount>splitAmounts, String description){
+    public   Transaction addTransaction(int userId, int groupId, double amount,int splitType, String description){
         Group group = this.groups.get(groupId);
         User user = this.users.get(userId);
-        return group.addTransaction(user,amount,splitAmounts,description);
-    }
-    private  Transaction addTransaction(int userId, int groupId, double amount,int splitType, String description){
         if(splitType==SplitType.EQUAL.typeId()){
+            double amountPerUser = amount/group.users.size();
+            for(User user1  : group.users){
+                if(user.equals(user1)) continue;
+            }
+            List<SplitAmount>splitAmounts = group.users.stream()
+                    .filter(user1 -> !user1.equals(user))
+                    .map(user1 -> new SplitAmount(user1,amountPerUser))
+                    .toList();
+
+            return group.addTransaction(user,amount,splitAmounts,description);
 
         }
+        return  null;
+    }
+
+    public User addUserInGroup(int userId, int groupId){
+        return  this.groups.get(groupId).addUser(this.users.get(userId));
     }
 }

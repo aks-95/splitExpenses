@@ -26,4 +26,8 @@ public class Group {
         this.transactions.add(transaction);
         return transaction;
     }
+    public User addUser(User user){
+       this.users.add(user);
+       return  user;
+    }
 }

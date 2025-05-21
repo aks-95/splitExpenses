@@ -1,0 +1,36 @@
+Expanses Split
+----------------
+1. user can create expense groups
+2. add people into it
+3. add expense (individual or group)
+4. split type : % percentage , by amount, equal for all etc
+5. should show what amount need to transfer to settle the balances
+6. view balance :  a. individual level b. group level
+7. Settle debt
+
+
+// --------- //-------
+classes
+-----
+User  : {id, name}
+Group : {id, name, List User, List Transaction, List MoneyBalance}
+Transaction : {id, User, Description, List SplitAmount, Date}
+SplitAmount : { User,amount}
+MoneyBalance : {User1, User2, amountNeedToPay}
+SplitType : {PERCENTAGE, AMOUNT, EQUAL}
+
+
+--------- work flow -------
+
+register bunch of users
+user  -> add an expense
+      -> create a group
+         add an expense
+            -> split expense
+                -> choose split type -> done
+      -> view balance -> in group / individual
+      -> settle balance -> group / individual  -> crate transaction  group
+                                                     -> create transaction in direct
+                                                         -> settle balance
+---------------------------
+

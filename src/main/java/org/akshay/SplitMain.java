@@ -1,11 +1,10 @@
 package org.akshay;
 
 import com.google.gson.Gson;
-import org.akshay.dto.Group;
-import org.akshay.dto.SplitManager;
-import org.akshay.dto.User;
+import org.akshay.dto.*;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -33,16 +32,17 @@ public class SplitMain {
                     break;
                 }
                 case "add":{
-                    String userName = scanner.next();
-                    User user = splitManager.addUser(userName);
-                    System.out.println("added user  : " + user);
-                    break;
-                }
-                case "create":{
-                    int userId = scanner.nextInt();
-                    String groupName = scanner.next();
-                    Group group = splitManager.addGroup(userId,groupName);
-                    System.out.println("created group : " + group);
+                    String type = scanner.next();
+                    if(type.equals("user")){
+                        String userName = scanner.next();
+                        User user = splitManager.addUser(userName);
+                        System.out.println("added user  : " + user);
+                    }else if(type.equals("group")){
+                        String groupName = scanner.next();
+                        int userId = scanner.nextInt();
+                        Group group = splitManager.addGroup(userId,groupName);
+                        System.out.println("created group : " + group);
+                    }
                     break;
                 }
                 case "list":{
@@ -51,12 +51,27 @@ public class SplitMain {
                     if(type.equals("group"))  splitManager.getGroups().forEach(System.out::println);
                     break;
                 }
-                case "transaction":{
-                    int userId  = scanner.nextInt();
-                    int groupId = scanner.nextInt();
-                    double amount = scanner.nextDouble();
-                    int splitType = scanner.nextInt();
-                   break;
+                case "group":{
+                    String type = scanner.next();
+                    if(type.equals("add")){
+                        String type1 = scanner.next();
+                        if(type1.equals("user")){
+                            int userId = scanner.nextInt();
+                            int groupId = scanner.nextInt();
+                            User user = splitManager.addUserInGroup(userId,groupId);
+                            System.out.println("added user in group : " + user);
+                        }else if(type1.equals("transaction")){
+                            int userId  = scanner.nextInt();
+                            int groupId = scanner.nextInt();
+                            double amount = scanner.nextDouble();
+                            int splitType = scanner.nextInt();
+                            String description = scanner.next();
+                            Transaction transaction = splitManager.addTransaction(userId,groupId,amount,splitType,description);
+                            System.out.println("added transaction : " + transaction);
+                        }
+
+
+                    }
                 }
             }
             scanner.nextLine();
@@ -67,9 +82,12 @@ public class SplitMain {
     public  static void printHelp(){
         System.out.println("h,help -> to print help");
         System.out.println("q,quit -> to quit the application");
-        System.out.println("add user -> add userName , ex add ramesh");
-        System.out.println("create group -> create userid groupName, ex add ramesh");
+        System.out.println("add user/group -> add user/group_name userId(if group option)");
         System.out.println("list user/group -> list user/group , ex list user");
+        System.out.println("split type ");
+        Arrays.stream(SplitType.values()).forEach(a->System.out.println(a.typeId() + " " + a.name()));
+        System.out.println("group add transaction/user , transaction(userid, groupId, amount, splittype, desciption) , user(userid, group id)");
+
 
 
     }
